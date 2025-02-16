@@ -1,11 +1,11 @@
-import React, { useRef, useEffect, useCallback } from 'react';
+import React, { useRef, useEffect, useState, useCallback } from 'react';
 import useSnakeFoodLogic from '../../logic/snake/snakeFoodLogic';
 import useSnakeMovementLogic from '../../logic/snake/snakeMovementLogic';
 import useSnakeCollisionLogic from '../../logic/snake/snakeCollisionLogic';
 import SnakeControls from '../../controls/SnakeControls';
 import GameOverAlert from '../../components/GameOverAlert';
 import useSnakeCanvasRendering from '../hooks/useSnakeCanvasRendering';
-import { height, width, CANVAS_COLOR } from '../../constants/snakeConstants';
+import { height, width, CANVAS_COLOR, SCORE_COUNTER } from '../../constants/snakeConstants';
 
 const Snake = () => {
     const { snake, direction, move, changeDirection, resetSnakePosition, speedUp, snakeSpeed } = useSnakeMovementLogic();
@@ -14,6 +14,7 @@ const Snake = () => {
     const canvasRef = useSnakeCanvasRendering(snake, foodPosition)
     const animationFrameRef = useRef<number | null>(null);
     const lastFrameTimeRef = useRef(0);
+    const [score, setScore] = useState(0);
 
     const animate = useCallback((timestamp: number) => {
         if (collision) return;
@@ -44,6 +45,7 @@ const Snake = () => {
 
     const onRestart = () => {
         resetSnakePosition();
+        setScore(0)
         resetCollision();
     };
 
@@ -56,11 +58,14 @@ const Snake = () => {
         if (checkFoodColision()) {
             spawnFood();
             move(direction, true);
+
+            setScore(prevScore => prevScore + SCORE_COUNTER)
         }
     }, [snake, direction, checkFoodColision, spawnFood, move]);
 
     return (
         <div style={{ display: 'flex', flexDirection: 'column', height: '100vh', backgroundColor: '#fff', marginTop: '15px' }}>
+            <p className="text-center font-bold text-lg">Your Score: {score}</p>
             <div style={{ flex: 1, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                 <canvas
                     ref={canvasRef}
@@ -71,7 +76,7 @@ const Snake = () => {
             </div>
             <div style={{ margin: '10px auto' }}>
                 <SnakeControls onDirectionChange={changeDirection} onSpeedUp={speedUp} />
-                {collision && <GameOverAlert onRestart={onRestart} />}
+                {collision && <GameOverAlert onRestart={onRestart} score={score} />}
             </div>
         </div>
     );

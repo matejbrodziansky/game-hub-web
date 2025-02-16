@@ -15,9 +15,6 @@ const App: React.FC = () => {
       <Routes>
         <Route path="/snake" element={<Snake />} />
       </Routes>
-      <h1 className="text-3xl font-bold underline">
-        Hello world!
-      </h1>
     </Router>
   );
 }

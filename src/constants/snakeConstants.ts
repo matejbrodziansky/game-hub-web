@@ -18,3 +18,4 @@ export const SNAKE_SIZE = 20;
 export const SNAKE_SPEED = 300;
 export const SNAKE_START_X = Math.floor((canvasWidth / 2) / GRID_SIZE) * GRID_SIZE;
 export const SNAKE_START_Y = Math.floor((canvasHeight / 2) / GRID_SIZE) * GRID_SIZE;
+export const SCORE_COUNTER =  10 
