@@ -3,8 +3,8 @@ import { SnakeSegment } from '../../types/snake/snakeTypes';
 import { width, height, GRID_SIZE } from '../../constants/snakeConstants';
 
 const useSnakeFoodLogic = (snake: SnakeSegment[]) => {
-const [isFoodOnBoard, setIsFoodOnBoard] = React.useState(false);
-  const [foodPosition, setFoodPosition] = React.useState<{ x: number; y: number }>({ x: -1, y: -1 });
+  const [isFoodOnBoard, setIsFoodOnBoard] = React.useState(false);
+  const [foodPosition, setFoodPosition] = React.useState<{ x: number; y: number }>({ x: 0, y: 0 });
   const snakeHead = snake[0];
 
   const checkFoodColision = React.useCallback(() => {

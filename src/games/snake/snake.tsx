@@ -1,3 +1,4 @@
+// TODO : Dont change direction in pause !
 import React, { useRef, useEffect, useState, useCallback } from 'react';
 import useSnakeFoodLogic from '../../logic/snake/snakeFoodLogic';
 import useSnakeMovementLogic from '../../logic/snake/snakeMovementLogic';
@@ -6,6 +7,7 @@ import SnakeControls from '../../controls/SnakeControls';
 import GameOverAlert from '../../components/GameOverAlert';
 import useSnakeCanvasRendering from '../hooks/useSnakeCanvasRendering';
 import { height, width, CANVAS_COLOR, SCORE_COUNTER } from '../../constants/snakeConstants';
+import Pause from '../../components/Pause';
 
 const Snake = () => {
     const { snake, direction, move, changeDirection, resetSnakePosition, speedUp, snakeSpeed } = useSnakeMovementLogic();
@@ -15,9 +17,10 @@ const Snake = () => {
     const animationFrameRef = useRef<number | null>(null);
     const lastFrameTimeRef = useRef(0);
     const [score, setScore] = useState(0);
+    const [isPaused, setisPaused] = useState(false)
 
     const animate = useCallback((timestamp: number) => {
-        if (collision) return;
+        if (collision || isPaused) return;
 
         if (!lastFrameTimeRef.current) {
             lastFrameTimeRef.current = timestamp;
@@ -31,7 +34,7 @@ const Snake = () => {
         }
 
         animationFrameRef.current = requestAnimationFrame(animate);
-    }, [collision, direction, move, snakeSpeed]);
+    }, [collision, direction, move, snakeSpeed, isPaused]);
 
     useEffect(() => {
         animationFrameRef.current = requestAnimationFrame(animate);
@@ -63,10 +66,41 @@ const Snake = () => {
         }
     }, [snake, direction, checkFoodColision, spawnFood, move]);
 
+    const handlePause = (paused: boolean) => {
+        setisPaused(paused)
+    }
+
     return (
-        <div style={{ display: 'flex', flexDirection: 'column', height: '100vh', backgroundColor: '#fff', marginTop: '15px' }}>
-            <p className="text-center font-bold text-lg">Your Score: {score}</p>
-            <div style={{ flex: 1, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+        <div style={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            height: '100vh',
+            backgroundColor: '#fff',
+            marginTop: '15px'
+        }}>
+            {/* HEADER: SCORE + PAUSE */}
+            <div style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                width: '80%',
+                maxWidth: '600px',
+                marginBottom: '10px'
+            }}>
+                <p className="font-bold text-xl text-white bg-orange-500 px-4 py-2 rounded-md shadow-lg">
+                    Your Score: {score}
+                </p>
+
+                <Pause isPaused={isPaused} onPause={handlePause} />
+            </div>
+
+            {/* MAIN CONTENT - CANVAS */}
+            <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center'
+            }}>
                 <canvas
                     ref={canvasRef}
                     width={width}
@@ -74,11 +108,14 @@ const Snake = () => {
                     style={{ backgroundColor: CANVAS_COLOR, border: '5px solid #ddd' }}
                 />
             </div>
-            <div style={{ margin: '10px auto' }}>
+
+            {/* CONTROLS + GAME OVER */}
+            <div style={{ marginTop: '10px' }}>
                 <SnakeControls onDirectionChange={changeDirection} onSpeedUp={speedUp} />
                 {collision && <GameOverAlert onRestart={onRestart} score={score} />}
             </div>
         </div>
+
     );
 };
 
