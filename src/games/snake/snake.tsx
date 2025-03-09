@@ -1,8 +1,8 @@
 // TODO : Dont change direction in pause !
 import React, { useRef, useEffect, useState, useCallback } from 'react';
-import useSnakeFoodLogic from '../../logic/snake/snakeFoodLogic';
-import useSnakeMovementLogic from '../../logic/snake/snakeMovementLogic';
-import useSnakeCollisionLogic from '../../logic/snake/snakeCollisionLogic';
+import useSnakeFoodLogic from '../logic/snake/snakeFoodLogic';
+import useSnakeMovementLogic from '../logic/snake/snakeMovementLogic';
+import useSnakeCollisionLogic from '../logic/snake/snakeCollisionLogic';
 import SnakeControls from '../../controls/SnakeControls';
 import GameOverAlert from '../../components/GameOverAlert';
 import useSnakeCanvasRendering from '../hooks/useSnakeCanvasRendering';

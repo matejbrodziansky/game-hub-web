@@ -1,7 +1,7 @@
 import React from 'react'
 import { useState, useRef, useEffect, useCallback } from 'react';
-import { Direction, DirectionEnum } from '../../types/snake/snakeTypes';
-import { GRID_SIZE, SNAKE_START_X, SNAKE_START_Y, SNAKE_SPEED } from '../../constants/snakeConstants';
+import { Direction, DirectionEnum } from '../../../types/snake/snakeTypes';
+import { GRID_SIZE, SNAKE_START_X, SNAKE_START_Y, SNAKE_SPEED } from '../../../constants/snakeConstants';
 
 
 const useSnakeMovementLogic = () => {
@@ -17,7 +17,7 @@ const useSnakeMovementLogic = () => {
   //   { x: 0, y: 100 },
   // ]
   // const initialSnakePosition = testLongSnake;
-  
+
   const initialSnakePosition = [{ x: SNAKE_START_X, y: SNAKE_START_Y }];
   const initialDirection = DirectionEnum.DOWN;
 

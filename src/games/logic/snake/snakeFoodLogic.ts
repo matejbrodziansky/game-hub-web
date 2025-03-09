@@ -1,6 +1,6 @@
 import React from 'react';
-import { SnakeSegment } from '../../types/snake/snakeTypes';
-import { width, height, GRID_SIZE } from '../../constants/snakeConstants';
+import { SnakeSegment } from '../../../types/snake/snakeTypes';
+import { width, height, GRID_SIZE } from '../../../constants/snakeConstants';
 
 const useSnakeFoodLogic = (snake: SnakeSegment[]) => {
   const [isFoodOnBoard, setIsFoodOnBoard] = React.useState(false);
