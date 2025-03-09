@@ -45,4 +45,11 @@ export const T_SHAPE_OFFSETS = [
     [2, 1],
 ];
 
+export const I_SHAPE_OFFSETS = [
+    [0, 0],
+    [0, 1],
+    [0, 2],
+    [0, 3],
+];
+
 

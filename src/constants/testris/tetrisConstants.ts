@@ -14,8 +14,8 @@ export const verticalPadding = 100;
 export const width = Math.min(MAX_WIDTH, screenWidth - 2 * horizontalPadding);
 export const height = Math.min(MAX_HEIGHT, screenHeight - 2 * verticalPadding);
 
-export const canvasWidth = Math.floor(width / GRID_SIZE) * GRID_SIZE;
-export const canvasHeight = Math.floor(height / GRID_SIZE) * GRID_SIZE;
+export const canvasWidth = TETRIS_COLUMNS * GRID_SIZE;
+export const canvasHeight = TETRIS_ROWS * GRID_SIZE;
 
 export const TETRIS_COLOR = '#8A9376';
 export const PIECE_COLOR = '#000100';
