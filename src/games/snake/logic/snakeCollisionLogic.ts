@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo, useCallback } from 'react';
-import { SnakeSegment } from '../../../types/snake/snakeTypes';
-import { width, height } from '../../../constants/snakeConstants';
+import { SnakeSegment } from '../types/snakeTypes';
+import { width, height } from '../constants/snakeConstants';
 
 const useSnakeCollisionLogic = (snake: SnakeSegment[]) => {
   const [collision, setCollision] = useState(false);

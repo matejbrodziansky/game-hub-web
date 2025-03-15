@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
-import { width, height } from '../../constants/testris/tetrisConstants';
-import useTetrisCanvasRendering from '../hooks/tetris/useTetrisCanvasRendering';
-import useTetrisMovementLogic from '../logic/tetris/useMovementLogic';
+import { width, height } from './constants/tetrisConstants';
+import useTetrisCanvasRendering from './hooks/useTetrisCanvasRendering';
+import useTetrisMovementLogic from './logic/useMovementLogic';
 
 
 import {
@@ -10,7 +10,7 @@ import {
   SQUARE_SHAPE_OFFSETS, Z_SHAPE_OFFSETS,
   T_SHAPE_OFFSETS,
   I_SHAPE_OFFSETS
-} from '../../constants/testris/tetrisShapes';
+} from './constants/tetrisShapes';
 
 const Tetris = () => {
   const { canvasRef, renderCanvas, setPosition, position } = useTetrisCanvasRendering();

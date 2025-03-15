@@ -1,13 +1,13 @@
 // TODO : Dont change direction in pause !
 import React, { useRef, useEffect, useState, useCallback } from 'react';
-import useSnakeFoodLogic from '../logic/snake/snakeFoodLogic';
-import useSnakeMovementLogic from '../logic/snake/snakeMovementLogic';
-import useSnakeCollisionLogic from '../logic/snake/snakeCollisionLogic';
-import SnakeControls from '../../controls/SnakeControls';
-import GameOverAlert from '../../components/GameOverAlert';
-import useSnakeCanvasRendering from '../hooks/snake/useSnakeCanvasRendering';
-import { height, width, CANVAS_COLOR, SCORE_COUNTER } from '../../constants/snakeConstants';
-import Pause from '../../components/Pause';
+import useSnakeFoodLogic from './logic/snakeFoodLogic';
+import useSnakeMovementLogic from './logic/snakeMovementLogic';
+import useSnakeCollisionLogic from './logic/snakeCollisionLogic';
+import SnakeControls from './controls/SnakeControls';
+import GameOverAlert from './components/GameOverAlert';
+import useSnakeCanvasRendering from './hooks/useSnakeCanvasRendering';
+import { height, width, CANVAS_COLOR, SCORE_COUNTER } from './constants/snakeConstants';
+import Pause from './components/Pause';
 
 const Snake = () => {
     const { snake, direction, move, changeDirection, resetSnakePosition, speedUp, snakeSpeed } = useSnakeMovementLogic();

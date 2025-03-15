@@ -1,7 +1,7 @@
 import React from 'react'
 import { useState, useRef, useEffect, useCallback } from 'react';
-import { Direction, DirectionEnum } from '../../../types/snake/snakeTypes';
-import { GRID_SIZE, SNAKE_START_X, SNAKE_START_Y, SNAKE_SPEED } from '../../../constants/snakeConstants';
+import { Direction, DirectionEnum } from '../types/snakeTypes';
+import { GRID_SIZE, SNAKE_START_X, SNAKE_START_Y, SNAKE_SPEED } from '../constants/snakeConstants';
 
 
 const useSnakeMovementLogic = () => {

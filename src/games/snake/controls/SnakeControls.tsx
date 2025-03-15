@@ -1,6 +1,6 @@
 import React from 'react';
 import { FaArrowLeft, FaArrowRight, FaArrowUp, FaArrowDown, FaRocket } from 'react-icons/fa';
-import { Direction } from '../types/snake/snakeTypes';
+import { Direction } from '../types/snakeTypes';
 
 interface SnakeControlsProps {
   onDirectionChange: (direction: Direction) => void;
