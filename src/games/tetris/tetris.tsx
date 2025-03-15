@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { width, height } from '../../constants/testris/tetrisConstants';
-import useTetrisCanvasRendering from '../hooks/useTetrisCanvasRendering';
+import useTetrisCanvasRendering from '../hooks/tetris/useTetrisCanvasRendering';
 import useTetrisMovementLogic from '../logic/tetris/useMovementLogic';
 
 

@@ -5,7 +5,7 @@ import useSnakeMovementLogic from '../logic/snake/snakeMovementLogic';
 import useSnakeCollisionLogic from '../logic/snake/snakeCollisionLogic';
 import SnakeControls from '../../controls/SnakeControls';
 import GameOverAlert from '../../components/GameOverAlert';
-import useSnakeCanvasRendering from '../hooks/useSnakeCanvasRendering';
+import useSnakeCanvasRendering from '../hooks/snake/useSnakeCanvasRendering';
 import { height, width, CANVAS_COLOR, SCORE_COUNTER } from '../../constants/snakeConstants';
 import Pause from '../../components/Pause';
 

@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react';
-import { width, height, GRID_SIZE, PIECE_COLOR } from '../../constants/testris/tetrisConstants';
+import { width, height, GRID_SIZE, PIECE_COLOR } from '../../../constants/testris/tetrisConstants';
 
 const useTetrisCanvasRendering = () => {
     const canvasRef = useRef<HTMLCanvasElement | null>(null)

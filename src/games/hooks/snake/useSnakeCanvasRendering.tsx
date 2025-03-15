@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
-import { width, height, GRID_SIZE } from '../../constants/snakeConstants';
-import { SnakeSegment, Food } from '../../types/snake/snakeTypes';
+import { width, height, GRID_SIZE } from '../../../constants/snakeConstants';
+import { SnakeSegment, Food } from '../../../types/snake/snakeTypes';
 
 const useSnakeCanvasRendering = (snake: SnakeSegment[], foodPosition: Food) => {
     const canvasRef = useRef<HTMLCanvasElement | null>(null)
