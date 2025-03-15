@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import { width, height } from '../../constants/testris/tetrisConstants';
 import useTetrisCanvasRendering from '../hooks/useTetrisCanvasRendering';
+import useTetrisMovementLogic from '../logic/tetris/useMovementLogic';
 
 
 import {
@@ -12,22 +13,23 @@ import {
 } from '../../constants/testris/tetrisShapes';
 
 const Tetris = () => {
-  const { canvasRef, renderCanvas,setPosition } = useTetrisCanvasRendering();
+  const { canvasRef, renderCanvas, setPosition, position } = useTetrisCanvasRendering();
+  const { move } = useTetrisMovementLogic()
+
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setPosition((prevPosition) => ({
-        x: prevPosition.x,
-        y: prevPosition.y + 1,
-      }))
-    }, 1000)
+      move(setPosition);
+
+    }, 1000);
 
     return () => clearInterval(interval);
-  },[setPosition])
+  }, [move, setPosition]);
+
 
   useEffect(() => {
     renderCanvas(T_SHAPE_OFFSETS);
-  }, [renderCanvas]);
+  }, [renderCanvas, position]);
 
   return (
     <div className="flex items-center justify-center">

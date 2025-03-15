@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { width, height, GRID_SIZE, PIECE_COLOR } from '../../constants/testris/tetrisConstants';
 
 const useTetrisCanvasRendering = () => {
@@ -57,7 +57,6 @@ const useTetrisCanvasRendering = () => {
 
     const renderCanvas = (shapeOffsets: number[][]) => {
         const canvas = canvasRef.current
-
         if (canvas) {
             const ctx = canvas.getContext('2d')
             if (ctx) {
@@ -73,6 +72,7 @@ const useTetrisCanvasRendering = () => {
         {
             canvasRef,
             setPosition,
+            position,
             drawGrid,
             renderCanvas
         }
