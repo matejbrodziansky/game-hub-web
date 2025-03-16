@@ -1,5 +1,6 @@
 import { useRef, useState } from 'react';
 import { width, height, GRID_SIZE, PIECE_COLOR } from '../constants/tetrisConstants';
+import { shapeOffsetsType } from '../types/types';
 
 const useTetrisCanvasRendering = () => {
     const canvasRef = useRef<HTMLCanvasElement | null>(null)
@@ -23,7 +24,7 @@ const useTetrisCanvasRendering = () => {
     };
 
 
-    const drawShape = (ctx: CanvasRenderingContext2D, shapeOffsets: number[][]) => {
+    const drawShape = (ctx: CanvasRenderingContext2D, shapeOffsets: shapeOffsetsType) => {
 
         const spawnXMiddle = width / 2;
 

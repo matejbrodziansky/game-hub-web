@@ -1,8 +1,7 @@
-import React, { useEffect } from 'react'
+import React, { useCallback, useEffect, useRef } from 'react'
 import { width, height } from './constants/tetrisConstants';
 import useTetrisCanvasRendering from './hooks/useTetrisCanvasRendering';
 import useTetrisMovementLogic from './logic/useMovementLogic';
-
 
 import {
   L_LEFT_SHAPE_OFFSETS,
@@ -11,20 +10,34 @@ import {
   T_SHAPE_OFFSETS,
   I_SHAPE_OFFSETS
 } from './constants/tetrisShapes';
+import useCollision from './logic/useCollision';
 
 const Tetris = () => {
   const { canvasRef, renderCanvas, setPosition, position } = useTetrisCanvasRendering();
   const { move } = useTetrisMovementLogic()
+  const { checkCollision } = useCollision()
 
+  const gameLooRef = useRef<NodeJS.Timeout | null>(null)
+
+
+  const updateGame = useCallback(() => {
+    if (!checkCollision(position, T_SHAPE_OFFSETS)) {
+
+      move(setPosition)
+    } else {
+      console.log('collision');
+      return
+    }
+
+  }, [checkCollision, setPosition, move, position])
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      move(setPosition);
+    gameLooRef.current = setInterval(updateGame, 500)
 
-    }, 1000);
-
-    return () => clearInterval(interval);
-  }, [move, setPosition]);
+    return () => {
+      if (gameLooRef.current) clearInterval(gameLooRef.current)
+    }
+  }, [updateGame]);
 
 
   useEffect(() => {
