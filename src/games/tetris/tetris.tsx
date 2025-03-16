@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { width, height } from './constants/tetrisConstants';
 import useTetrisCanvasRendering from './hooks/useTetrisCanvasRendering';
 import useTetrisMovementLogic from './logic/useMovementLogic';
@@ -11,21 +11,23 @@ import {
   I_SHAPE_OFFSETS
 } from './constants/tetrisShapes';
 import useCollision from './logic/useCollision';
+import { spawnRandomShape } from './utils/tetrisUtils';
 
 const Tetris = () => {
   const { canvasRef, renderCanvas, setPosition, position } = useTetrisCanvasRendering();
   const { move } = useTetrisMovementLogic()
   const { checkCollision } = useCollision()
-
+  const [currentShape, setCurrentShape] = useState(() => spawnRandomShape());
   const gameLooRef = useRef<NodeJS.Timeout | null>(null)
 
 
   const updateGame = useCallback(() => {
-    if (!checkCollision(position, T_SHAPE_OFFSETS)) {
+    if (!checkCollision(position, currentShape)) {
 
       move(setPosition)
     } else {
       console.log('collision');
+      // setCurrentShape(spawnRandomShape());
       return
     }
 
@@ -41,8 +43,8 @@ const Tetris = () => {
 
 
   useEffect(() => {
-    renderCanvas(T_SHAPE_OFFSETS);
-  }, [renderCanvas, position]);
+    renderCanvas(currentShape);
+  }, [renderCanvas, position, currentShape]);
 
   return (
     <div className="flex items-center justify-center">
