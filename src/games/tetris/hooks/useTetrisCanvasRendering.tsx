@@ -1,28 +1,48 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { width, height, GRID_SIZE, PIECE_COLOR } from '../constants/tetrisConstants';
 import { shapeOffsetsType } from '../types/types';
+
+import {
+    L_LEFT_SHAPE_OFFSETS,
+    L_MIRRORED_SHAPE_OFFSETS,
+    SQUARE_SHAPE_OFFSETS, Z_SHAPE_OFFSETS,
+    T_SHAPE_OFFSETS,
+    I_SHAPE_OFFSETS
+} from '../constants/tetrisShapes';
+import useGridState from './useGridState';
 
 const useTetrisCanvasRendering = () => {
     const canvasRef = useRef<HTMLCanvasElement | null>(null)
     const centerX = useRef(0);
     const [position, setPosition] = useState({ x: 0, y: 0 })
+    const [fixedShapes, setFixedShapes] = useState<shapeOffsetsType[]>([]);
+    const { gridState } = useGridState()
+
 
     const drawGrid = (ctx: CanvasRenderingContext2D) => {
         ctx.strokeStyle = 'green'; // TODO: color to constants
-        for (let x = 0; x < width; x += GRID_SIZE) {
+        gridState.forEach((_, rowIndex) => {
             ctx.beginPath();
-            ctx.moveTo(x, 0);
-            ctx.lineTo(x, height);
+            ctx.moveTo(0, (rowIndex + 1) * GRID_SIZE);
+            ctx.lineTo(width, (rowIndex + 1) * GRID_SIZE);
             ctx.stroke();
-        }
-        for (let y = 0; y < height; y += GRID_SIZE) {
-            ctx.beginPath();
-            ctx.moveTo(0, y);
-            ctx.lineTo(width, y);
-            ctx.stroke();
+        });
+
+        if (gridState.length > 0) {
+            gridState[0].forEach((_, colIndex) => {
+                ctx.beginPath();
+                ctx.moveTo((colIndex + 1) * GRID_SIZE, 0);
+                ctx.lineTo((colIndex + 1) * GRID_SIZE, height);
+                ctx.stroke();
+            });
         }
     };
 
+
+
+    const resetPosition = () => {
+        setPosition({ x: 0, y: 0 })
+    }
 
     const drawShape = (ctx: CanvasRenderingContext2D, shapeOffsets: shapeOffsetsType) => {
 
@@ -53,6 +73,7 @@ const useTetrisCanvasRendering = () => {
             // Biely obrys
             ctx.strokeStyle = 'white';
             ctx.strokeRect(x, y, GRID_SIZE, GRID_SIZE);
+
         });
     }
 
@@ -75,7 +96,9 @@ const useTetrisCanvasRendering = () => {
             setPosition,
             position,
             drawGrid,
-            renderCanvas
+            renderCanvas,
+            resetPosition,
+            setFixedShapes
         }
     )
 }
