@@ -2,39 +2,33 @@ import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { width, height } from './constants/tetrisConstants';
 import useTetrisCanvasRendering from './hooks/useTetrisCanvasRendering';
 import useTetrisMovementLogic from './logic/useMovementLogic';
-
-import {
-  L_LEFT_SHAPE_OFFSETS,
-  L_MIRRORED_SHAPE_OFFSETS,
-  SQUARE_SHAPE_OFFSETS, Z_SHAPE_OFFSETS,
-  T_SHAPE_OFFSETS,
-  I_SHAPE_OFFSETS
-} from './constants/tetrisShapes';
 import useCollision from './logic/useCollision';
 import { spawnRandomShape } from './utils/tetrisUtils';
+import useGridState from './hooks/useGridState';
 
 const Tetris = () => {
-  const { canvasRef, renderCanvas, setPosition, position } = useTetrisCanvasRendering();
+  const { canvasRef, renderCanvas, setPosition, position, resetPosition, setGridState } = useTetrisCanvasRendering();
   const { move } = useTetrisMovementLogic()
   const { checkCollision } = useCollision()
   const [currentShape, setCurrentShape] = useState(() => spawnRandomShape());
   const gameLooRef = useRef<NodeJS.Timeout | null>(null)
+  const { updateGridOnCollision, gridState } = useGridState()
 
 
   const updateGame = useCallback(() => {
     if (!checkCollision(position, currentShape)) {
-
-      move(setPosition)
+      move(setPosition);
     } else {
-      console.log('collision');
-      // setCurrentShape(spawnRandomShape());
-      return
+      updateGridOnCollision(currentShape, position)
+      resetPosition();
+      setCurrentShape(spawnRandomShape());
+      return;
     }
+  }, [checkCollision, setPosition, move, position, currentShape, resetPosition, updateGridOnCollision]);
 
-  }, [checkCollision, setPosition, move, position])
 
   useEffect(() => {
-    gameLooRef.current = setInterval(updateGame, 500)
+    gameLooRef.current = setInterval(updateGame, 200)
 
     return () => {
       if (gameLooRef.current) clearInterval(gameLooRef.current)
@@ -43,8 +37,11 @@ const Tetris = () => {
 
 
   useEffect(() => {
+    setGridState(gridState)
     renderCanvas(currentShape);
-  }, [renderCanvas, position, currentShape]);
+  }, [renderCanvas, position, currentShape, gridState, setGridState]);
+
+
 
   return (
     <div className="flex items-center justify-center">
