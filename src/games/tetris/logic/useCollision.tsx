@@ -1,5 +1,5 @@
 import React from 'react'
-import { width, height, GRID_SIZE, PIECE_COLOR } from '../constants/tetrisConstants';
+import { height, GRID_SIZE } from '../constants/tetrisConstants';
 import { shapeOffsetsType } from '../types/types'
 import { getLowestPartOfShapeOffset } from '../utils/tetrisUtils';
 import { useGridStateContext } from '../context/GridStateContext';

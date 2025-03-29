@@ -1,16 +1,16 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useCallback } from 'react';
 import { width, height, GRID_SIZE, PIECE_COLOR, TETRIS_COLUMNS } from '../constants/tetrisConstants';
 import { shapeOffsetsType } from '../types/types';
 import { useGridStateContext } from '../context/GridStateContext';
+import { getLowestPartOfShapeOffset } from '../utils/tetrisUtils';
 
-const useTetrisCanvasRendering = () => {
+const useTetrisCanvasRendering = (currentShape: shapeOffsetsType) => {
     const canvasRef = useRef<HTMLCanvasElement | null>(null)
     const initialX = Math.floor(TETRIS_COLUMNS / 2);
     const [position, setPosition] = useState({ x: initialX, y: 0 })
     const { gridState } = useGridStateContext();
 
-
-    const drawGrid = (ctx: CanvasRenderingContext2D) => {
+    const drawGrid = useCallback((ctx: CanvasRenderingContext2D) => {
         ctx.strokeStyle = 'green'; // TODO: color to constants
 
         if (!gridState) return;
@@ -51,19 +51,17 @@ const useTetrisCanvasRendering = () => {
                 ctx.stroke();
             });
         }
-    };
+    }, [gridState]);
 
     const resetPosition = () => {
         setPosition({ x: Math.floor(TETRIS_COLUMNS / 2), y: 0 });
     };
 
-    const drawShape = (ctx: CanvasRenderingContext2D, shapeOffsets: shapeOffsetsType) => {
-        ;
-        let centerX = 0;
+    const drawShape = (ctx: CanvasRenderingContext2D,) => {
 
-        shapeOffsets.forEach(([dx, dy], i) => {
+        currentShape.forEach(([dx, dy], i) => {
 
-            const x = (dx + position.x) * GRID_SIZE - centerX * 2;
+            const x = (dx + position.x) * GRID_SIZE;
             const y = (dy + position.y) * GRID_SIZE;
 
             ctx.fillStyle = PIECE_COLOR;
@@ -82,19 +80,29 @@ const useTetrisCanvasRendering = () => {
         });
     };
 
-    const renderCanvas = (shapeOffsets: number[][]) => {
+    const renderCanvas = () => {
         const canvas = canvasRef.current;
-
 
         if (canvas) {
             const ctx = canvas.getContext('2d');
             if (ctx) {
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
                 drawGrid(ctx);
-                drawShape(ctx, shapeOffsets);
+                drawShape(ctx);
             }
         }
     };
+
+    const calculateInitialPosition = useCallback((shapeOffset: shapeOffsetsType) => {
+        const lowestPart = getLowestPartOfShapeOffset(shapeOffset);
+        console.log(lowestPart);
+
+        setPosition({ x: initialX, y: -lowestPart });
+    }, [initialX, setPosition]);
+
+    useEffect(() => {
+        calculateInitialPosition(currentShape);
+    }, [currentShape, calculateInitialPosition])
 
     useEffect(() => {
         const canvas = canvasRef.current;
@@ -105,8 +113,7 @@ const useTetrisCanvasRendering = () => {
                 drawGrid(ctx);
             }
         }
-    }, [gridState]);
-
+    }, [gridState, drawGrid]);
 
     return {
         canvasRef,

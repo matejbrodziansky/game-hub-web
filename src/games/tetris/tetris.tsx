@@ -8,10 +8,10 @@ import { useGridStateContext } from './context/GridStateContext';
 
 const Tetris = () => {
   const { gridState, updateGridOnCollision } = useGridStateContext();
-  const { canvasRef, renderCanvas, setPosition, position, resetPosition } = useTetrisCanvasRendering();
+  const [currentShape, setCurrentShape] = useState(() => spawnRandomShape());
+  const { canvasRef, renderCanvas, setPosition, position, resetPosition } = useTetrisCanvasRendering(currentShape);
   const { move } = useTetrisMovementLogic()
   const { checkCollision } = useCollision()
-  const [currentShape, setCurrentShape] = useState(() => spawnRandomShape());
   const gameLooRef = useRef<NodeJS.Timeout | null>(null)
   const positionRef = useRef(position);
 
@@ -41,7 +41,7 @@ const Tetris = () => {
 
 
   useEffect(() => {
-    renderCanvas(currentShape);
+    renderCanvas();
   }, [renderCanvas, position, currentShape, gridState]);
 
 
