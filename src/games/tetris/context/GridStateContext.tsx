@@ -4,6 +4,7 @@ import { shapeOffsetsType, positionType } from '../types/types';
 
 interface GridStateContextType {
     gridState: (boolean | null)[][];
+    filledCells: Set<string>;
     updateGridOnCollision: (shapeOffset: shapeOffsetsType, position: positionType) => void;
 }
 
@@ -14,6 +15,7 @@ export const GridStateProvider: React.FC<{ children: ReactNode }> = ({ children 
     const [gridState, setGridState] = useState(
         Array.from({ length: TETRIS_ROWS }, () => Array(TETRIS_COLUMNS).fill(null))
     );
+    const [filledCells, setFilledCells] = useState(new Set<string>())
 
     const updateGridOnCollision = (shapeOffset: shapeOffsetsType, position: positionType) => {
         setGridState(prevState => {
@@ -23,14 +25,20 @@ export const GridStateProvider: React.FC<{ children: ReactNode }> = ({ children 
                 const x = position.x + dx;
                 if (y >= 0 && y < TETRIS_ROWS && x >= 0 && x < TETRIS_COLUMNS) {
                     newState[y][x] = true;
+
+                    setFilledCells(prev => {
+                        const cellKey = `${x},${y}`;
+                        return new Set([...Array.from(prev), cellKey]);
+                    });
                 }
             });
+
             return newState;
         });
     };
 
     return (
-        <GridStateContext.Provider value={{ gridState, updateGridOnCollision }}>
+        <GridStateContext.Provider value={{ gridState, filledCells, updateGridOnCollision }}>
             {children}
         </GridStateContext.Provider>
     );
