@@ -4,27 +4,27 @@ import useTetrisCanvasRendering from './hooks/useTetrisCanvasRendering';
 import useTetrisMovementLogic from './logic/useMovementLogic';
 import useCollision from './logic/useCollision';
 import { spawnRandomShape } from './utils/tetrisUtils';
-import useGridState from './hooks/useGridState';
+import { useGridStateContext } from './context/GridStateContext';
 
 const Tetris = () => {
-  const { canvasRef, renderCanvas, setPosition, position, resetPosition, setGridState } = useTetrisCanvasRendering();
+  const { gridState, updateGridOnCollision } = useGridStateContext();
+  const { canvasRef, renderCanvas, setPosition, position, resetPosition } = useTetrisCanvasRendering();
   const { move } = useTetrisMovementLogic()
   const { checkCollision } = useCollision()
   const [currentShape, setCurrentShape] = useState(() => spawnRandomShape());
   const gameLooRef = useRef<NodeJS.Timeout | null>(null)
-  const { updateGridOnCollision, gridState } = useGridState()
+  const positionRef = useRef(position);
 
 
   const updateGame = useCallback(() => {
-    if (!checkCollision(position, currentShape)) {
+    if (!checkCollision(positionRef.current, currentShape)) {
       move(setPosition);
     } else {
-      updateGridOnCollision(currentShape, position)
+      updateGridOnCollision(currentShape, positionRef.current);
       resetPosition();
       setCurrentShape(spawnRandomShape());
-      return;
     }
-  }, [checkCollision, setPosition, move, position, currentShape, resetPosition, updateGridOnCollision]);
+  }, [checkCollision, move, resetPosition, updateGridOnCollision, currentShape]);
 
 
   useEffect(() => {
@@ -35,11 +35,14 @@ const Tetris = () => {
     }
   }, [updateGame]);
 
+  useEffect(() => {
+    positionRef.current = position;
+  }, [position]);
+
 
   useEffect(() => {
-    setGridState(gridState)
     renderCanvas(currentShape);
-  }, [renderCanvas, position, currentShape, gridState, setGridState]);
+  }, [renderCanvas, position, currentShape, gridState]);
 
 
 

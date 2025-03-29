@@ -1,12 +1,14 @@
 import { useEffect, useRef, useState } from 'react';
 import { width, height, GRID_SIZE, PIECE_COLOR, TETRIS_COLUMNS } from '../constants/tetrisConstants';
 import { shapeOffsetsType } from '../types/types';
+import { useGridStateContext } from '../context/GridStateContext';
 
 const useTetrisCanvasRendering = () => {
     const canvasRef = useRef<HTMLCanvasElement | null>(null)
     const initialX = Math.floor(TETRIS_COLUMNS / 2);
     const [position, setPosition] = useState({ x: initialX, y: 0 })
-    const [gridState, setGridState] = useState<(number | null)[][]>([])
+    const { gridState } = useGridStateContext();
+
 
     const drawGrid = (ctx: CanvasRenderingContext2D) => {
         ctx.strokeStyle = 'green'; // TODO: color to constants
@@ -52,9 +54,11 @@ const useTetrisCanvasRendering = () => {
     };
 
     const resetPosition = () => {
-        setPosition({ x: Math.floor(TETRIS_COLUMNS / 2), y: 0 });    };
+        setPosition({ x: Math.floor(TETRIS_COLUMNS / 2), y: 0 });
+    };
 
-    const drawShape = (ctx: CanvasRenderingContext2D, shapeOffsets: shapeOffsetsType) => {;
+    const drawShape = (ctx: CanvasRenderingContext2D, shapeOffsets: shapeOffsetsType) => {
+        ;
         let centerX = 0;
 
         shapeOffsets.forEach(([dx, dy], i) => {
@@ -108,10 +112,8 @@ const useTetrisCanvasRendering = () => {
         canvasRef,
         setPosition,
         position,
-        drawGrid,
         renderCanvas,
         resetPosition,
-        setGridState
     };
 };
 
