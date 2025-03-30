@@ -3,12 +3,14 @@ import { height, GRID_SIZE } from '../constants/tetrisConstants';
 import { shapeOffsetsType } from '../types/types'
 import { getLowestPartOfShapeOffset } from '../utils/tetrisUtils';
 import { useGridStateContext } from '../context/GridStateContext';
+import { useMovementContext } from '../context/MovementContext';
 
 const useCollision = () => {
     const bottom = height / GRID_SIZE
     const { filledCells } = useGridStateContext();
+    const { position } = useMovementContext();
 
-    const checkCollision = (position: { x: number, y: number }, shapeOffsets: shapeOffsetsType) => {
+    const checkCollision = ( shapeOffsets: shapeOffsetsType) => {
         const lowestPartOfShape = getLowestPartOfShapeOffset(shapeOffsets)
 
         if (checkBottomCollision(position.y + lowestPartOfShape)) return true
@@ -31,7 +33,7 @@ const useCollision = () => {
     const checkBottomCollision = (position: number) => {
         return position === bottom
     }
-
+    
     return {
         checkCollision
     }

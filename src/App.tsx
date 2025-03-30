@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 import Snake from './games/snake/snake';
 import Tetris from './games/tetris/tetris';
 import { GridStateProvider } from './games/tetris/context/GridStateContext';
+import { MovementProvider } from './games/tetris/context/MovementContext';
 
 
 
@@ -22,7 +23,9 @@ const App: React.FC = () => {
           path="/tetris"
           element={
             <GridStateProvider>
-              <Tetris />
+              <MovementProvider>
+                <Tetris />
+              </MovementProvider>
             </GridStateProvider>
           }
         />

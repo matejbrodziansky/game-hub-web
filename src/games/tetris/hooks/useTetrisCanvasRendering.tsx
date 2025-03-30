@@ -3,11 +3,13 @@ import { width, height, GRID_SIZE, PIECE_COLOR, TETRIS_COLUMNS } from '../consta
 import { shapeOffsetsType } from '../types/types';
 import { useGridStateContext } from '../context/GridStateContext';
 import { getLowestPartOfShapeOffset } from '../utils/tetrisUtils';
+import { useMovementContext } from '../context/MovementContext';
 
 const useTetrisCanvasRendering = (currentShape: shapeOffsetsType) => {
     const canvasRef = useRef<HTMLCanvasElement | null>(null)
     const initialX = Math.floor(TETRIS_COLUMNS / 2);
-    const [position, setPosition] = useState({ x: initialX, y: 0 })
+    const {position, setPosition} = useMovementContext();
+
     const { gridState } = useGridStateContext();
 
     const drawGrid = useCallback((ctx: CanvasRenderingContext2D) => {

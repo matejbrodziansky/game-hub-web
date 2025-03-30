@@ -32,7 +32,6 @@ export const GridStateProvider: React.FC<{ children: ReactNode }> = ({ children 
                     });
                 }
             });
-
             return newState;
         });
     };
