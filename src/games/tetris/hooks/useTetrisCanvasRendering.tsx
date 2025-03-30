@@ -95,7 +95,6 @@ const useTetrisCanvasRendering = (currentShape: shapeOffsetsType) => {
 
     const calculateInitialPosition = useCallback((shapeOffset: shapeOffsetsType) => {
         const lowestPart = getLowestPartOfShapeOffset(shapeOffset);
-        console.log(lowestPart);
 
         setPosition({ x: initialX, y: -lowestPart });
     }, [initialX, setPosition]);

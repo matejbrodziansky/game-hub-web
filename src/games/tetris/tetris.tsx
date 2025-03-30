@@ -1,16 +1,17 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react'
-import { width, height } from './constants/tetrisConstants';
+import { width, height, MoveDirectionType } from './constants/tetrisConstants';
 import useTetrisCanvasRendering from './hooks/useTetrisCanvasRendering';
 import useTetrisMovementLogic from './logic/useMovementLogic';
 import useCollision from './logic/useCollision';
 import { spawnRandomShape } from './utils/tetrisUtils';
 import { useGridStateContext } from './context/GridStateContext';
+import Controls from './controls/Controls'
 
 const Tetris = () => {
   const { gridState, updateGridOnCollision } = useGridStateContext();
   const [currentShape, setCurrentShape] = useState(() => spawnRandomShape());
   const { canvasRef, renderCanvas, setPosition, position, resetPosition } = useTetrisCanvasRendering(currentShape);
-  const { move } = useTetrisMovementLogic()
+  const { run, handleMove } = useTetrisMovementLogic()
   const { checkCollision } = useCollision()
   const gameLooRef = useRef<NodeJS.Timeout | null>(null)
   const positionRef = useRef(position);
@@ -18,13 +19,13 @@ const Tetris = () => {
 
   const updateGame = useCallback(() => {
     if (!checkCollision(positionRef.current, currentShape)) {
-      move(setPosition);
+      run(setPosition);
     } else {
       updateGridOnCollision(currentShape, positionRef.current);
       resetPosition();
       setCurrentShape(spawnRandomShape());
     }
-  }, [checkCollision, move, resetPosition, updateGridOnCollision, currentShape]);
+  }, [checkCollision, run, resetPosition, updateGridOnCollision, currentShape]);
 
 
   useEffect(() => {
@@ -44,17 +45,54 @@ const Tetris = () => {
     renderCanvas();
   }, [renderCanvas, position, currentShape, gridState]);
 
-
+  const moveHandler = (direction: MoveDirectionType) => {
+    handleMove(direction, setPosition);
+  };
 
   return (
-    <div className="flex items-center justify-center">
-      <canvas
-        ref={canvasRef}
-        width={width}
-        height={height}
-        className="bg-gradient-to-b from-gray-800 to-black border-8 border-gray-500 rounded-lg shadow-lg"
-      />
+    <div style={{
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      height: '100vh',
+      marginTop: '15px'
+    }}>
+
+      {/* HEADER: SCORE + PAUSE */}
+      <div style={{
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        width: '80%',
+        maxWidth: '600px',
+        marginBottom: '10px'
+      }}>
+        <p className="font-bold text-xl text-white bg-orange-500 px-4 py-2 rounded-md shadow-lg">
+          Your Score: 0
+          {/* {score} */}
+        </p>
+      </div>
+
+      {/* MAIN CONTENT - CANVAS */}
+      <div style={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center'
+      }}>
+        <canvas
+          ref={canvasRef}
+          width={width}
+          height={height}
+          className="bg-gradient-to-b from-gray-800 to-black border-8 border-gray-500 rounded-lg shadow-lg"
+        />
+      </div>
+
+      {/* CONTROLS + GAME OVER */}
+      <div style={{ marginTop: '10px' }}>
+        <Controls handleMove={moveHandler} />
+      </div>
     </div>
+
   );
 }
 

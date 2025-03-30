@@ -19,3 +19,14 @@ export const canvasHeight = TETRIS_ROWS * GRID_SIZE;
 
 export const TETRIS_COLOR = '#8A9376';
 export const PIECE_COLOR = '#000100';
+
+
+// Movement
+export enum MoveDirection {
+    LEFT = 'LEFT',
+    RIGHT = 'RIGHT',
+    DOWN = 'DOWN',  
+    ROTATE = 'ROTATE'
+}
+
+export type MoveDirectionType = `${MoveDirection}`;
