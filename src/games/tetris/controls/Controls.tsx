@@ -1,6 +1,6 @@
 import React from 'react';
 import { FaArrowLeft, FaArrowRight, FaArrowUp, FaArrowDown, FaRocket } from 'react-icons/fa';
-import { MoveDirection } from '../constants/tetrisConstants';
+import { MoveDirection } from '../types/types';
 
 
 interface ControlsProps {

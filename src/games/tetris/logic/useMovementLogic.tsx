@@ -1,9 +1,7 @@
 import { useCallback } from 'react';
-import { MoveDirection, MoveDirectionType } from '../constants/tetrisConstants';
-import useTetrisCanvasRendering from '../hooks/useTetrisCanvasRendering';
+import { MoveDirection, MoveDirectionType } from '../types/types';
 
 const useTetrisMovementLogic = () => {
-    const { setPosition } = useTetrisCanvasRendering();
     const DOWN_SPEED = 2
 
     const run = useCallback((setPosition: React.Dispatch<React.SetStateAction<{ x: number, y: number }>>) => {

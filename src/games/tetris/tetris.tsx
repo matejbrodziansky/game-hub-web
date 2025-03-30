@@ -1,11 +1,12 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react'
-import { width, height, MoveDirectionType } from './constants/tetrisConstants';
+import { width, height } from './constants/tetrisConstants';
 import useTetrisCanvasRendering from './hooks/useTetrisCanvasRendering';
 import useTetrisMovementLogic from './logic/useMovementLogic';
 import useCollision from './logic/useCollision';
 import { spawnRandomShape } from './utils/tetrisUtils';
 import { useGridStateContext } from './context/GridStateContext';
 import Controls from './controls/Controls'
+import { MoveDirectionType } from './types/types';
 
 const Tetris = () => {
   const { gridState, updateGridOnCollision } = useGridStateContext();
