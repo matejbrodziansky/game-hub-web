@@ -5,6 +5,7 @@ import Snake from './games/snake/snake';
 import Tetris from './games/tetris/tetris';
 import { GridStateProvider } from './games/tetris/context/GridStateContext';
 import { MovementProvider } from './games/tetris/context/MovementContext';
+import { ShapeProvider } from './games/tetris/context/ShapeContext';
 
 
 
@@ -22,11 +23,13 @@ const App: React.FC = () => {
         <Route
           path="/tetris"
           element={
-            <GridStateProvider>
-              <MovementProvider>
-                <Tetris />
-              </MovementProvider>
-            </GridStateProvider>
+            <ShapeProvider>
+              <GridStateProvider>
+                <MovementProvider>
+                  <Tetris />
+                </MovementProvider>
+              </GridStateProvider>
+            </ShapeProvider>
           }
         />
       </Routes>
@@ -35,3 +38,5 @@ const App: React.FC = () => {
 }
 
 export default App;
+
+

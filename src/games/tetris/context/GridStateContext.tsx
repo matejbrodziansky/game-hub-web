@@ -10,7 +10,6 @@ interface GridStateContextType {
 
 const GridStateContext = createContext<GridStateContextType | null>(null);
 
-
 export const GridStateProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     const [gridState, setGridState] = useState(
         Array.from({ length: TETRIS_ROWS }, () => Array(TETRIS_COLUMNS).fill(null))

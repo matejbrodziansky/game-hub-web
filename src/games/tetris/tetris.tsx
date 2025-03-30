@@ -2,30 +2,28 @@ import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { width, height } from './constants/tetrisConstants';
 import useTetrisCanvasRendering from './hooks/useTetrisCanvasRendering';
 import useCollision from './logic/useCollision';
-import { spawnRandomShape } from './utils/tetrisUtils';
 import { useGridStateContext } from './context/GridStateContext';
 import Controls from './controls/Controls'
 import { MoveDirectionType } from './types/types';
 import { useMovementContext } from './context/MovementContext';
+import { useShapeContext } from './context/ShapeContext';
 
 const Tetris = () => {
   const { gridState, updateGridOnCollision } = useGridStateContext();
-  const [currentShape, setCurrentShape] = useState(() => spawnRandomShape());
+  const { currentShape, spawnNewShape } = useShapeContext();
   const { canvasRef, renderCanvas, setPosition, position, resetPosition } = useTetrisCanvasRendering(currentShape);
   const { checkCollision } = useCollision()
   const { handleMove, run } = useMovementContext();
   const gameLooRef = useRef<NodeJS.Timeout | null>(null)
-
-
   const updateGame = useCallback(() => {
     if (!checkCollision(currentShape)) {
       run();
     } else {
       updateGridOnCollision(currentShape, position); // TODO PREMYSLIeť
       resetPosition();
-      setCurrentShape(spawnRandomShape());
+      spawnNewShape()
     }
-  }, [checkCollision, run, resetPosition, updateGridOnCollision, currentShape, position]);
+  }, [checkCollision, run, resetPosition, updateGridOnCollision, currentShape, position, spawnNewShape]);
 
 
   useEffect(() => {
